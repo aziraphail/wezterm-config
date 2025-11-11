@@ -1,12 +1,32 @@
 local gpu_adapters = require('utils.gpu-adapter')
 local backdrops = require('utils.backdrops')
 local colors = require('colors.custom')
+local env = require('utils.env')
+
+local front_end_choices = {
+   WebGpu = true,
+   OpenGL = true,
+   Software = true,
+}
+
+local front_end = env.get('WEZTERM_FRONT_END', 'WebGpu')
+if not front_end_choices[front_end] then
+   front_end = 'WebGpu'
+end
+
+local focus_mode_on_start = env.bool('WEZTERM_BACKDROP_FOCUS_MODE', false)
+local preferred_adapter = nil
+
+if front_end == 'WebGpu' then
+   preferred_adapter = gpu_adapters:pick_best()
+end
 
 return {
    max_fps = 120,
-   front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
+   front_end = front_end, ---@type 'WebGpu' | 'OpenGL' | 'Software'
    webgpu_power_preference = 'HighPerformance',
-   webgpu_preferred_adapter = gpu_adapters:pick_best(),
+    ---Prefer the best adapter only when WebGpu is active
+   webgpu_preferred_adapter = preferred_adapter,
    -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Dx12', 'IntegratedGpu'),
    -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Gl', 'Other'),
    underline_thickness = '1.5pt',
@@ -22,7 +42,7 @@ return {
    colors = colors,
 
    -- background: pass in `true` if you want wezterm to start with focus mode on (no bg images)
-   background = backdrops:initial_options(false),
+   background = backdrops:initial_options(focus_mode_on_start),
 
    -- scrollbar
    enable_scroll_bar = true,

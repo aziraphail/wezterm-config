@@ -1,16 +1,27 @@
 local wezterm = require('wezterm')
 local platform = require('utils.platform')
+local env = require('utils.env')
 local backdrops = require('utils.backdrops')
+local domains = require('config.domains')
 local act = wezterm.action
 
 local mod = {}
 
-if platform.is_mac then
+local custom_super = env.get('WEZTERM_SUPER_KEY')
+if custom_super then
+   mod.SUPER = custom_super
+   mod.SUPER_REV = custom_super .. '|CTRL'
+elseif platform.is_mac then
    mod.SUPER = 'SUPER'
    mod.SUPER_REV = 'SUPER|CTRL'
-elseif platform.is_win or platform.is_linux then
+else
    mod.SUPER = 'ALT' -- to not conflict with Windows key shortcuts
    mod.SUPER_REV = 'ALT|CTRL'
+end
+
+local wsl_domain_name = nil
+if domains.wsl_domains and #domains.wsl_domains > 0 then
+   wsl_domain_name = domains.wsl_domains[1].name
 end
 
 -- stylua: ignore
@@ -60,7 +71,12 @@ local keys = {
    -- tabs --
    -- tabs: spawn+close
    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
-   { key = 't',          mods = mod.SUPER_REV, action = act.SpawnTab({ DomainName = 'wsl:ubuntu-fish' }) },
+   {
+      key = 't',
+      mods = mod.SUPER_REV,
+      action = wsl_domain_name and act.SpawnTab({ DomainName = wsl_domain_name })
+         or act.SpawnTab('DefaultDomain'),
+   },
    { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
    -- tabs: navigation

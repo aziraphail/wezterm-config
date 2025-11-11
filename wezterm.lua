@@ -1,10 +1,23 @@
+local wezterm = require('wezterm')
 local Config = require('config')
+local env = require('utils.env')
+local backdrops = require('utils.backdrops')
 
-require('utils.backdrops')
-   -- :set_focus('#000000')
-   -- :set_images_dir(require('wezterm').home_dir .. '/Pictures/Wallpapers/')
-   :set_images()
-   :random()
+local backdrop_dir = env.get('WEZTERM_BACKDROP_DIR')
+if backdrop_dir then
+   backdrops:set_images_dir(backdrop_dir)
+end
+
+local focus_color = env.get('WEZTERM_FOCUS_COLOR')
+if focus_color then
+   backdrops:set_focus(focus_color)
+end
+
+backdrops:set_images()
+
+if not env.bool('WEZTERM_DISABLE_RANDOM_BACKDROP', false) then
+   backdrops:random()
+end
 
 require('events.left-status').setup()
 require('events.right-status').setup({ date_format = '%a %H:%M:%S' })
