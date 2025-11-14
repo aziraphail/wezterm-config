@@ -41,9 +41,13 @@ end
 
 if platform.is_win then
    set_default_prog({})
+   local local_domain = { DomainName = 'local' }
    add_launch_entry(options.launch_menu, 'PowerShell (pwsh)', { 'pwsh', '-NoLogo' })
+   options.launch_menu[#options.launch_menu].domain = local_domain
    add_launch_entry(options.launch_menu, 'PowerShell Desktop', { 'powershell' })
+   options.launch_menu[#options.launch_menu].domain = local_domain
    add_launch_entry(options.launch_menu, 'Command Prompt', { 'cmd' })
+   options.launch_menu[#options.launch_menu].domain = local_domain
 
    local git_bash = env.get('WEZTERM_GIT_BASH')
    if not git_bash then
@@ -54,10 +58,12 @@ if platform.is_win then
    end
    if git_bash then
       add_launch_entry(options.launch_menu, 'Git Bash', { git_bash, '-l' })
+      options.launch_menu[#options.launch_menu].domain = local_domain
    end
 
    local nu = env.get('WEZTERM_NUSHELL_EXE') or 'nu'
    add_launch_entry(options.launch_menu, 'Nushell', { nu })
+   options.launch_menu[#options.launch_menu].domain = local_domain
 
    if domains.wsl_domains and #domains.wsl_domains > 0 then
       set_default_domain(domains.wsl_domains[1].name)
