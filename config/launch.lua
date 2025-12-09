@@ -39,6 +39,29 @@ local function add_launch_entry(tbl, label, args)
    table.insert(tbl, { label = label, args = args })
 end
 
+local function find_git_bash()
+   local candidates = {}
+   local function add(path)
+      if path and path ~= '' then
+         table.insert(candidates, path)
+      end
+   end
+
+   -- Prefer explicit env, then common Program Files installs, then Scoop.
+   add(env.get('WEZTERM_GIT_BASH'))
+   add('C:/Program Files/Git/bin/bash.exe')
+   add('C:/Program Files (x86)/Git/bin/bash.exe')
+   add('C:\\Program Files\\Git\\bin\\bash.exe')
+   add('C:\\Program Files (x86)\\Git\\bin\\bash.exe')
+   add(wezterm.home_dir .. '\\scoop\\apps\\git\\current\\bin\\bash.exe')
+
+   for _, path in ipairs(candidates) do
+      if not wezterm.file_exists or wezterm.file_exists(path) then
+         return path
+      end
+   end
+end
+
 if platform.is_win then
    set_default_prog({})
    local local_domain = { DomainName = 'local' }
@@ -49,13 +72,7 @@ if platform.is_win then
    add_launch_entry(options.launch_menu, 'Command Prompt', { 'cmd' })
    options.launch_menu[#options.launch_menu].domain = local_domain
 
-   local git_bash = env.get('WEZTERM_GIT_BASH')
-   if not git_bash then
-      local candidate = wezterm.home_dir .. '\\scoop\\apps\\git\\current\\bin\\bash.exe'
-      if wezterm.file_exists and wezterm.file_exists(candidate) then
-         git_bash = candidate
-      end
-   end
+   local git_bash = find_git_bash()
    if git_bash then
       add_launch_entry(options.launch_menu, 'Git Bash', { git_bash, '-l' })
       options.launch_menu[#options.launch_menu].domain = local_domain
