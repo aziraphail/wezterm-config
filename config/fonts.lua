@@ -2,8 +2,8 @@ local wezterm = require('wezterm')
 local platform = require('utils.platform')
 local env = require('utils.env')
 
-local default_font = env.get('WEZTERM_FONT', 'JetBrainsMono Nerd Font')
-local fallback_font = env.get('WEZTERM_FONT_FALLBACK', 'FiraCode Nerd Font')
+local default_font = env.get('WEZTERM_FONT', 'FiraCode Nerd Font')
+local fallback_font = env.get('WEZTERM_FONT_FALLBACK', 'JetBrainsMono Nerd Font')
 
 local font_definitions = {
    {
