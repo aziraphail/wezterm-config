@@ -47,13 +47,13 @@ local function find_git_bash()
       end
    end
 
-   -- Prefer explicit env, then common Program Files installs, then Scoop.
+   -- Prefer explicit env, then Scoop, then common Program Files installs.
    add(env.get('WEZTERM_GIT_BASH'))
+   add(wezterm.home_dir .. '\\scoop\\apps\\git\\current\\bin\\bash.exe')
    add('C:/Program Files/Git/bin/bash.exe')
    add('C:/Program Files (x86)/Git/bin/bash.exe')
    add('C:\\Program Files\\Git\\bin\\bash.exe')
    add('C:\\Program Files (x86)\\Git\\bin\\bash.exe')
-   add(wezterm.home_dir .. '\\scoop\\apps\\git\\current\\bin\\bash.exe')
 
    for _, path in ipairs(candidates) do
       if not wezterm.file_exists or wezterm.file_exists(path) then
