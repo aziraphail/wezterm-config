@@ -220,7 +220,7 @@ local keys = {
       action = act.ActivateKeyTable({
          name = 'resize_font',
          one_shot = false,
-         timemout_milliseconds = 1000,
+         timeout_milliseconds = 2000,
       }),
    },
    -- resize panes
@@ -230,7 +230,7 @@ local keys = {
       action = act.ActivateKeyTable({
          name = 'resize_pane',
          one_shot = false,
-         timemout_milliseconds = 1000,
+         timeout_milliseconds = 2000,
       }),
    },
 }
@@ -266,7 +266,7 @@ local mouse_bindings = {
 return {
    disable_default_key_bindings = true,
    -- disable_default_mouse_bindings = true,
-   leader = { key = 'Space', mods = mod.SUPER_REV },
+   leader = { key = 'Space', mods = mod.SUPER_REV, timeout_milliseconds = 3000 },
    keys = keys,
    key_tables = key_tables,
    mouse_bindings = mouse_bindings,
