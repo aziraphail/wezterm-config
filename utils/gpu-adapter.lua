@@ -33,7 +33,8 @@ GpuAdapters.AVAILABLE_BACKENDS = {
 }
 
 ---@type WeztermGPUAdapter[]
-GpuAdapters.ENUMERATED_GPUS = wezterm.gui.enumerate_gpus()
+local ok, gpus = pcall(wezterm.gui.enumerate_gpus)
+GpuAdapters.ENUMERATED_GPUS = ok and gpus or {}
 
 ---@return GpuAdapters
 ---@private
