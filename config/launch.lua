@@ -65,11 +65,11 @@ end
 if platform.is_win then
    set_default_prog({})
    local local_domain = { DomainName = 'local' }
-   add_launch_entry(options.launch_menu, 'PowerShell (pwsh)', { 'pwsh', '-NoLogo' })
+   add_launch_entry(options.launch_menu, 'PowerShell 7', { 'pwsh', '-NoLogo' })
    options.launch_menu[#options.launch_menu].domain = local_domain
-   add_launch_entry(options.launch_menu, 'PowerShell Desktop', { 'powershell' })
+   add_launch_entry(options.launch_menu, 'Windows PowerShell', { 'powershell' })
    options.launch_menu[#options.launch_menu].domain = local_domain
-   add_launch_entry(options.launch_menu, 'Command Prompt', { 'cmd' })
+   add_launch_entry(options.launch_menu, 'Command Prompt (cmd)', { 'cmd' })
    options.launch_menu[#options.launch_menu].domain = local_domain
 
    local git_bash = find_git_bash()
