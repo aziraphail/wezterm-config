@@ -2,7 +2,7 @@ local wezterm = require('wezterm')
 local platform = require('utils.platform')
 local env = require('utils.env')
 local backdrops = require('utils.backdrops')
-local domains = require('config.domains')
+local new_tab_button = require('events.new-tab-button')
 local act = wezterm.action
 
 local mod = {}
@@ -19,10 +19,6 @@ else
    mod.SUPER_REV = 'ALT|CTRL'
 end
 
-local wsl_domain_name = nil
-if domains.wsl_domains and #domains.wsl_domains > 0 then
-   wsl_domain_name = domains.wsl_domains[1].name
-end
 
 -- stylua: ignore
 local keys = {
@@ -72,10 +68,23 @@ local keys = {
    -- tabs: spawn+close
    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
    {
-      key = 't',
-      mods = mod.SUPER_REV,
-      action = wsl_domain_name and act.SpawnTab({ DomainName = wsl_domain_name })
-         or act.SpawnTab('DefaultDomain'),
+      key = 'l',
+      mods = mod.SUPER,
+      action = act.InputSelector({
+         title = 'InputSelector: Launch Menu',
+         choices = new_tab_button.choices,
+         fuzzy = true,
+         fuzzy_description = wezterm.nerdfonts.md_rocket .. ' Select a launch item: ',
+         action = wezterm.action_callback(function(window, pane, id, label)
+            if not id and not label then
+               return
+            end
+            window:perform_action(
+               act.SpawnCommandInNewTab(new_tab_button.choices_data[tonumber(id)]),
+               pane
+            )
+         end),
+      }),
    },
    { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 

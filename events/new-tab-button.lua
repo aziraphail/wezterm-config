@@ -91,6 +91,9 @@ end
 
 local choices, choices_data = build_choices()
 
+M.choices = choices
+M.choices_data = choices_data
+
 M.setup = function()
    wezterm.on('new-tab-button-click', function(window, pane, button, default_action)
       if default_action and button == 'Left' then
