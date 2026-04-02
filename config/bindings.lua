@@ -15,8 +15,8 @@ elseif platform.is_mac then
    mod.SUPER = 'SUPER'
    mod.SUPER_REV = 'SUPER|CTRL'
 else
-   mod.SUPER = 'ALT' -- to not conflict with Windows key shortcuts
-   mod.SUPER_REV = 'ALT|CTRL'
+   mod.SUPER = 'CTRL|SHIFT' -- matches Ghostty/Kitty convention; safe from shell conflicts
+   mod.SUPER_REV = 'CTRL|ALT'
 end
 
 
@@ -55,10 +55,10 @@ local keys = {
       }),
    },
 
-   -- cursor movement --
-   { key = 'LeftArrow',  mods = mod.SUPER,     action = act.SendString '\u{1b}OH' },
-   { key = 'RightArrow', mods = mod.SUPER,     action = act.SendString '\u{1b}OF' },
-   { key = 'Backspace',  mods = mod.SUPER,     action = act.SendString '\u{15}' },
+   -- cursor movement (shell pass-through, hardcoded to Alt) --
+   { key = 'LeftArrow',  mods = 'ALT',         action = act.SendString '\u{1b}OH' },
+   { key = 'RightArrow', mods = 'ALT',         action = act.SendString '\u{1b}OF' },
+   { key = 'Backspace',  mods = 'ALT',         action = act.SendString '\u{15}' },
 
    -- copy/paste --
    { key = 'c',          mods = 'CTRL|SHIFT',  action = act.CopyTo('Clipboard') },
@@ -242,23 +242,32 @@ local keys = {
       }),
    },
 
-   -- font reset (direct shortcut, no key table needed)
-   { key = 'r',     mods = mod.SUPER_REV, action = act.ResetFontSize },
+   -- font size (browser/Ghostty convention, hardcoded to Ctrl)
+   { key = '=',     mods = 'CTRL',  action = act.IncreaseFontSize },
+   { key = '-',     mods = 'CTRL',  action = act.DecreaseFontSize },
+   { key = '0',     mods = 'CTRL',  action = act.ResetFontSize },
 }
 
--- tab switching: mod.SUPER + 1-8 for tabs, mod.SUPER + 9 for last tab
+-- tab switching: Alt+1-8 for tabs, Alt+9 for last tab (matches Ghostty)
 for i = 1, 8 do
    table.insert(keys, {
       key = tostring(i),
-      mods = mod.SUPER,
+      mods = 'ALT',
       action = act.ActivateTab(i - 1),
    })
 end
 table.insert(keys, {
    key = '9',
-   mods = mod.SUPER,
+   mods = 'ALT',
    action = act.ActivateTab(-1),
 })
+
+-- tab cycling (universal browser/terminal convention)
+table.insert(keys, { key = 'Tab', mods = 'CTRL',       action = act.ActivateTabRelative(1) })
+table.insert(keys, { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) })
+
+-- command palette (matches Ghostty/VS Code/Windows Terminal)
+table.insert(keys, { key = 'p', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette })
 
 -- stylua: ignore
 local key_tables = {
