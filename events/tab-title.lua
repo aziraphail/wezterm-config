@@ -4,33 +4,7 @@
 
 local wezterm = require('wezterm')
 local Cells = require('utils.cells')
-local OptsValidator = require('utils.opts-validator')
-
----
--- =======================================
--- Defining event setup options and schema
--- =======================================
-
----@alias Event.TabTitleOptions { unseen_icon: 'circle' | 'numbered_circle' | 'numbered_box', hide_active_tab_unseen: boolean }
-
----Setup options for the tab title
-local EVENT_OPTS = {}
-
----@type OptsSchema
-EVENT_OPTS.schema = {
-   {
-      name = 'unseen_icon',
-      type = 'string',
-      enum = { 'circle', 'numbered_circle', 'numbered_box' },
-      default = 'circle',
-   },
-   {
-      name = 'hide_active_tab_unseen',
-      type = 'boolean',
-      default = true,
-   },
-}
-EVENT_OPTS.validator = OptsValidator:new(EVENT_OPTS.schema)
+local DEFAULTS = { unseen_icon = 'circle', hide_active_tab_unseen = true }
 
 ---
 -- ===================
@@ -304,10 +278,9 @@ local tab_list = {}
 
 ---@param opts? Event.TabTitleOptions Default: {unseen_icon = 'circle', hide_active_tab_unseen = true}
 M.setup = function(opts)
-   local valid_opts, err = EVENT_OPTS.validator:validate(opts or {})
-
-   if err then
-      wezterm.log_error(err)
+   opts = opts or {}
+   for k, v in pairs(DEFAULTS) do
+      if opts[k] == nil then opts[k] = v end
    end
 
    -- CUSTOM EVENT
@@ -355,13 +328,13 @@ M.setup = function(opts)
    wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
       if not tab_list[tab.tab_id] then
          tab_list[tab.tab_id] = Tab:new()
-         tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
+         tab_list[tab.tab_id]:set_info(opts, tab, max_width)
          tab_list[tab.tab_id]:create_cells()
          return tab_list[tab.tab_id]:render()
       end
 
-      tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
-      tab_list[tab.tab_id]:update_cells(valid_opts, tab.is_active, hover)
+      tab_list[tab.tab_id]:set_info(opts, tab, max_width)
+      tab_list[tab.tab_id]:update_cells(opts, tab.is_active, hover)
       return tab_list[tab.tab_id]:render()
    end)
 end
