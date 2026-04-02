@@ -44,8 +44,7 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 | Ctrl+Shift+T | New tab (default domain) |
 | Ctrl+Tab | Next tab |
 | Ctrl+Shift+Tab | Previous tab |
-| Ctrl+Shift+[ / ] | Previous / next tab (alternative) |
-| Ctrl+Alt+[ / ] | Move tab left / right |
+| Ctrl+PageUp / PageDown | Move tab left / right |
 | Alt+1-8 | Switch to tab 1-8 |
 | Alt+9 | Switch to last tab |
 | Ctrl+Alt+W | Close tab (no confirm) |
@@ -57,14 +56,13 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 
 | Keys | Action |
 | ---- | ------ |
-| Ctrl+Shift+\ | Split vertically |
-| Ctrl+Alt+\ | Split horizontally |
+| Ctrl+Shift+D | Split right (new pane to the right) |
+| Ctrl+Alt+D | Split down (new pane below) |
 | Ctrl+Shift+Enter | Toggle pane zoom |
 | Ctrl+Shift+W | Close current pane |
-| Ctrl+Alt+H/J/K/L | Move pane focus Left/Down/Up/Right |
+| Ctrl+Alt+Arrow keys | Move pane focus |
 | Ctrl+Alt+P | Pane select (swap with active, keep focus) |
-| Ctrl+Shift+U / D | Scroll up / down 5 lines |
-| PageUp / PageDown | Scroll 0.75 page |
+| Shift+PageUp / PageDown | Scroll full page |
 
 ## Font Size
 
@@ -78,17 +76,7 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 
 | Keys | Action |
 | ---- | ------ |
-| Ctrl+Shift+- / = | Shrink / grow window (50px, ignored in fullscreen) |
 | Ctrl+Alt+Enter | Maximize window |
-
-## Background Controls
-
-| Keys | Action |
-| ---- | ------ |
-| Ctrl+Shift+/ | Random background image |
-| Ctrl+Shift+, / . | Cycle background images |
-| Ctrl+Alt+/ | Fuzzy-select background image |
-| Ctrl+Shift+B | Toggle focus mode (solid color, no image) |
 
 ## Cursor Movement (shell pass-through)
 
@@ -100,20 +88,35 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 
 ## Leader Key Sequences
 
-Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then press the key below. Key tables auto-exit after 2 seconds of inactivity, or press Escape/q.
+Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then press the key below.
 
-### Resize Font Mode (Leader then f)
+### Background Mode (Leader then b, one-shot)
+
+| Key | Action |
+| --- | ------ |
+| r | Random background image |
+| n | Next background image |
+| p | Previous background image |
+| s | Fuzzy-select background image |
+
+### Focus Mode (direct shortcut)
 
 | Keys | Action |
 | ---- | ------ |
+| Ctrl+Shift+B | Toggle focus mode (solid color, no image) |
+
+### Resize Font Mode (Leader then f, 2s timeout)
+
+| Key | Action |
+| --- | ------ |
 | k / j | Increase / decrease font size |
 | r | Reset font size |
 | Escape / q | Exit mode |
 
-### Resize Pane Mode (Leader then p)
+### Resize Pane Mode (Leader then p, 2s timeout)
 
-| Keys | Action |
-| ---- | ------ |
+| Key | Action |
+| --- | ------ |
 | k / j / h / l | Grow pane Up / Down / Left / Right (1 cell) |
 | Escape / q | Exit mode |
 
@@ -128,6 +131,7 @@ Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then pres
 ## Notes
 
 - Default key bindings are disabled; only shortcuts listed here are active.
-- Default mouse bindings are **not** disabled; copy-on-select and other mouse behaviors work normally.
+- Default mouse bindings are **not** disabled; copy-on-select works normally.
 - The `SUPER` modifier can be overridden via the `WEZTERM_SUPER_KEY` environment variable.
 - Ctrl+Shift is used as the primary modifier because terminal apps cannot distinguish Ctrl+Shift+key from Ctrl+key, making it a safe namespace that never conflicts with shell shortcuts.
+- Symbol keys ([ ] \ / , . - =) are avoided with Ctrl+Shift because Shift transforms them on Windows. Letter keys and special keys (Tab, Enter, Arrow, PageUp) are used instead.

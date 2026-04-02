@@ -88,11 +88,9 @@ local keys = {
    },
    { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
-   -- tabs: navigation
-   { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-   { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
-   { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-   { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+   -- tabs: navigation (Ctrl+Tab/Ctrl+Shift+Tab added below via table.insert)
+   { key = 'PageUp',    mods = 'CTRL',        action = act.MoveTabRelative(-1) },
+   { key = 'PageDown',  mods = 'CTRL',        action = act.MoveTabRelative(1) },
 
    -- tab: title
    { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.manual-update-tab-title') },
@@ -104,33 +102,7 @@ local keys = {
    -- window: spawn windows
    { key = 'n',          mods = mod.SUPER,     action = act.SpawnWindow },
 
-   -- window: zoom window
-   {
-      key = '-',
-      mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
-         local dimensions = window:get_dimensions()
-         if dimensions.is_full_screen then
-            return
-         end
-         local new_width = dimensions.pixel_width - 50
-         local new_height = dimensions.pixel_height - 50
-         window:set_inner_size(new_width, new_height)
-      end)
-   },
-   {
-      key = '=',
-      mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
-         local dimensions = window:get_dimensions()
-         if dimensions.is_full_screen then
-            return
-         end
-         local new_width = dimensions.pixel_width + 50
-         local new_height = dimensions.pixel_height + 50
-         window:set_inner_size(new_width, new_height)
-      end)
-   },
+   -- window: maximize
    {
       key = 'Enter',
       mods = mod.SUPER_REV,
@@ -139,45 +111,7 @@ local keys = {
       end)
    },
 
-   -- background controls --
-   {
-      key = [[/]],
-      mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
-         backdrops:random(window)
-      end),
-   },
-   {
-      key = [[,]],
-      mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
-         backdrops:cycle_back(window)
-      end),
-   },
-   {
-      key = [[.]],
-      mods = mod.SUPER,
-      action = wezterm.action_callback(function(window, _pane)
-         backdrops:cycle_forward(window)
-      end),
-   },
-   {
-      key = [[/]],
-      mods = mod.SUPER_REV,
-      action = act.InputSelector({
-         title = 'InputSelector: Select Background',
-         choices = backdrops:choices(),
-         fuzzy = true,
-         fuzzy_description = 'Select Background: ',
-         action = wezterm.action_callback(function(window, _pane, idx)
-            if not idx then
-               return
-            end
-            ---@diagnostic disable-next-line: param-type-mismatch
-            backdrops:set_img(window, tonumber(idx))
-         end),
-      }),
-   },
+   -- background: toggle focus mode (letter key, works with Ctrl+Shift)
    {
       key = 'b',
       mods = mod.SUPER,
@@ -187,27 +121,19 @@ local keys = {
    },
 
    -- panes --
-   -- panes: split panes
-   {
-      key = [[\]],
-      mods = mod.SUPER,
-      action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
-   },
-   {
-      key = [[\]],
-      mods = mod.SUPER_REV,
-      action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
-   },
+   -- panes: split (letter keys to avoid Ctrl+Shift+symbol issues)
+   { key = 'd',     mods = mod.SUPER,     action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
+   { key = 'd',     mods = mod.SUPER_REV, action = act.SplitVertical({ domain = 'CurrentPaneDomain' }) },
 
    -- panes: zoom+close pane
    { key = 'Enter', mods = mod.SUPER,     action = act.TogglePaneZoomState },
    { key = 'w',     mods = mod.SUPER,     action = act.CloseCurrentPane({ confirm = false }) },
 
-   -- panes: navigation
-   { key = 'k',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
-   { key = 'j',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
-   { key = 'h',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
-   { key = 'l',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
+   -- panes: navigation (arrow keys to avoid Ctrl+Alt+letter conflicts with system apps)
+   { key = 'UpArrow',    mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
+   { key = 'DownArrow',  mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
+   { key = 'LeftArrow',  mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
+   { key = 'RightArrow', mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
    {
       key = 'p',
       mods = mod.SUPER_REV,
@@ -215,10 +141,8 @@ local keys = {
    },
 
    -- panes: scroll pane
-   { key = 'u',        mods = mod.SUPER, action = act.ScrollByLine(-5) },
-   { key = 'd',        mods = mod.SUPER, action = act.ScrollByLine(5) },
-   { key = 'PageUp',   mods = 'NONE',    action = act.ScrollByPage(-0.75) },
-   { key = 'PageDown', mods = 'NONE',    action = act.ScrollByPage(0.75) },
+   { key = 'PageUp',   mods = 'SHIFT',   action = act.ScrollByPage(-1) },
+   { key = 'PageDown', mods = 'SHIFT',   action = act.ScrollByPage(1) },
 
    -- key-tables --
    -- resizes fonts
@@ -269,8 +193,56 @@ table.insert(keys, { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabR
 -- command palette (matches Ghostty/VS Code/Windows Terminal)
 table.insert(keys, { key = 'p', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette })
 
+-- background controls (Leader key sequences)
+table.insert(keys, {
+   key = 'b',
+   mods = 'LEADER',
+   action = act.ActivateKeyTable({
+      name = 'background',
+      one_shot = true,
+   }),
+})
+
 -- stylua: ignore
 local key_tables = {
+   background = {
+      {
+         key = 'r',
+         action = wezterm.action_callback(function(window, _pane)
+            backdrops:random(window)
+         end),
+      },
+      {
+         key = 'n',
+         action = wezterm.action_callback(function(window, _pane)
+            backdrops:cycle_forward(window)
+         end),
+      },
+      {
+         key = 'p',
+         action = wezterm.action_callback(function(window, _pane)
+            backdrops:cycle_back(window)
+         end),
+      },
+      {
+         key = 's',
+         action = act.InputSelector({
+            title = 'InputSelector: Select Background',
+            choices = backdrops:choices(),
+            fuzzy = true,
+            fuzzy_description = 'Select Background: ',
+            action = wezterm.action_callback(function(window, _pane, idx)
+               if not idx then
+                  return
+               end
+               ---@diagnostic disable-next-line: param-type-mismatch
+               backdrops:set_img(window, tonumber(idx))
+            end),
+         }),
+      },
+      { key = 'Escape', action = 'PopKeyTable' },
+      { key = 'q',      action = 'PopKeyTable' },
+   },
    resize_font = {
       { key = 'k',      action = act.IncreaseFontSize },
       { key = 'j',      action = act.DecreaseFontSize },
