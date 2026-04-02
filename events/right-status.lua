@@ -56,9 +56,12 @@ cells
    :add_segment('battery_icon', '', colors.battery)
    :add_segment('battery_text', '', colors.battery, attr(attr.intensity('Bold')))
 
----@return string, string
+local has_battery = #wezterm.battery_info() > 0
+
 local function battery_info()
-   -- ref: https://wezfurlong.org/wezterm/config/lua/wezterm/battery_info.html
+   if not has_battery then
+      return nil, nil
+   end
 
    local charge = ''
    local icon = ''
@@ -84,19 +87,21 @@ M.setup = function(opts)
       if opts[k] == nil then opts[k] = v end
    end
 
-   wezterm.on('update-right-status', function(window, _pane)
-      local battery_text, battery_icon = battery_info()
+   wezterm.on('update-status', function(window, _pane)
+      cells:update_segment_text('date_text', wezterm.strftime(opts.date_format))
 
-      cells
-         :update_segment_text('date_text', wezterm.strftime(opts.date_format))
-         :update_segment_text('battery_icon', battery_icon)
-         :update_segment_text('battery_text', battery_text)
+      local segments
+      if has_battery then
+         local battery_text, battery_icon = battery_info()
+         cells
+            :update_segment_text('battery_icon', battery_icon)
+            :update_segment_text('battery_text', battery_text)
+         segments = { 'date_icon', 'date_text', 'separator', 'battery_icon', 'battery_text' }
+      else
+         segments = { 'date_icon', 'date_text' }
+      end
 
-      window:set_right_status(
-         wezterm.format(
-            cells:render({ 'date_icon', 'date_text', 'separator', 'battery_icon', 'battery_text' })
-         )
-      )
+      window:set_right_status(wezterm.format(cells:render(segments)))
    end)
 end
 
