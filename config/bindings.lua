@@ -95,11 +95,10 @@ local keys = {
    { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
 
    -- tab: title
-   { key = '0',          mods = mod.SUPER,     action = act.EmitEvent('tabs.manual-update-tab-title') },
-   { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.reset-tab-title') },
+   { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.manual-update-tab-title') },
 
    -- tab: hide tab-bar
-   { key = '9',          mods = mod.SUPER,     action = act.EmitEvent('tabs.toggle-tab-bar'), },
+   { key = '9',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.toggle-tab-bar'), },
 
    -- window --
    -- window: spawn windows
@@ -242,7 +241,24 @@ local keys = {
          timeout_milliseconds = 2000,
       }),
    },
+
+   -- font reset (direct shortcut, no key table needed)
+   { key = 'r',     mods = mod.SUPER_REV, action = act.ResetFontSize },
 }
+
+-- tab switching: mod.SUPER + 1-8 for tabs, mod.SUPER + 9 for last tab
+for i = 1, 8 do
+   table.insert(keys, {
+      key = tostring(i),
+      mods = mod.SUPER,
+      action = act.ActivateTab(i - 1),
+   })
+end
+table.insert(keys, {
+   key = '9',
+   mods = mod.SUPER,
+   action = act.ActivateTab(-1),
+})
 
 -- stylua: ignore
 local key_tables = {
