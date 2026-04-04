@@ -47,7 +47,7 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 | Ctrl+PageUp / PageDown | Move tab left / right |
 | Alt+1-8 | Switch to tab 1-8 |
 | Alt+9 | Switch to last tab |
-| Ctrl+Alt+W | Close tab (no confirm) |
+| Ctrl+Shift+W | Close tab (when only one pane; see Panes) |
 | Ctrl+Alt+0 | Rename tab (prompt) |
 | Ctrl+Alt+9 | Toggle tab bar visibility |
 | Ctrl+Shift+L | Fuzzy launch selector (profiles with icons) |
@@ -57,9 +57,9 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 | Keys | Action |
 | ---- | ------ |
 | Ctrl+Shift+D | Split right (new pane to the right) |
-| Ctrl+Alt+D | Split down (new pane below) |
+| Ctrl+Shift+E | Split down (new pane below) |
 | Ctrl+Shift+Enter | Toggle pane zoom |
-| Ctrl+Shift+W | Close current pane |
+| Ctrl+Shift+W | Close surface: closes pane (if multiple panes), otherwise closes tab |
 | Ctrl+Alt+Arrow keys | Move pane focus |
 | Ctrl+Alt+P | Pane select (swap with active, keep focus) |
 | Shift+PageUp / PageDown | Scroll full page |
@@ -135,3 +135,4 @@ Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then pres
 - The `SUPER` modifier can be overridden via the `WEZTERM_SUPER_KEY` environment variable.
 - Ctrl+Shift is used as the primary modifier because terminal apps cannot distinguish Ctrl+Shift+key from Ctrl+key, making it a safe namespace that never conflicts with shell shortcuts.
 - Symbol keys ([ ] \ / , . - =) are avoided with Ctrl+Shift because Shift transforms them on Windows. Letter keys and special keys (Tab, Enter, Arrow, PageUp) are used instead.
+- **Close surface** (Ctrl+Shift+W) matches Ghostty's `close_surface` action: if the tab has multiple panes, it closes the active pane; if only one pane remains, it closes the tab. No separate close-tab and close-pane bindings needed.

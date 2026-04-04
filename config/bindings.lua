@@ -86,7 +86,7 @@ local keys = {
          end),
       }),
    },
-   { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
+   -- (close tab removed: Ctrl+Shift+W now acts as close_surface — closes pane or tab)
 
    -- tabs: navigation (Ctrl+Tab/Ctrl+Shift+Tab added below via table.insert)
    { key = 'PageUp',    mods = 'CTRL',        action = act.MoveTabRelative(-1) },
@@ -121,13 +121,25 @@ local keys = {
    },
 
    -- panes --
-   -- panes: split (letter keys to avoid Ctrl+Shift+symbol issues)
+   -- panes: split (both on Ctrl+Shift to match Ghostty primary modifier convention)
    { key = 'd',     mods = mod.SUPER,     action = act.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
-   { key = 'd',     mods = mod.SUPER_REV, action = act.SplitVertical({ domain = 'CurrentPaneDomain' }) },
+   { key = 'e',     mods = mod.SUPER,     action = act.SplitVertical({ domain = 'CurrentPaneDomain' }) },
 
-   -- panes: zoom+close pane
+   -- panes: zoom
    { key = 'Enter', mods = mod.SUPER,     action = act.TogglePaneZoomState },
-   { key = 'w',     mods = mod.SUPER,     action = act.CloseCurrentPane({ confirm = false }) },
+
+   -- close surface: closes pane if multiple panes exist, otherwise closes tab (matches Ghostty close_surface)
+   {
+      key = 'w',
+      mods = mod.SUPER,
+      action = wezterm.action_callback(function(window, pane)
+         if #window:active_tab():panes() > 1 then
+            window:perform_action(act.CloseCurrentPane({ confirm = false }), pane)
+         else
+            window:perform_action(act.CloseCurrentTab({ confirm = false }), pane)
+         end
+      end),
+   },
 
    -- panes: navigation (arrow keys to avoid Ctrl+Alt+letter conflicts with system apps)
    { key = 'UpArrow',    mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
