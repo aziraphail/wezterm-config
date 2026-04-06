@@ -56,9 +56,9 @@ local keys = {
    },
 
    -- cursor movement (shell pass-through, hardcoded to Alt) --
-   { key = 'LeftArrow',  mods = 'ALT',         action = act.SendString '\u{1b}OH' },
-   { key = 'RightArrow', mods = 'ALT',         action = act.SendString '\u{1b}OF' },
-   { key = 'Backspace',  mods = 'ALT',         action = act.SendString '\u{15}' },
+   { key = 'LeftArrow',  mods = 'ALT',         action = act.SendString '\u{1b}b' },   -- word left
+   { key = 'RightArrow', mods = 'ALT',         action = act.SendString '\u{1b}f' },   -- word right
+   { key = 'Backspace',  mods = 'ALT',         action = act.SendString '\u{1b}\u{7f}' }, -- delete word back
 
    -- copy/paste --
    { key = 'c',          mods = 'CTRL|SHIFT',  action = act.CopyTo('Clipboard') },

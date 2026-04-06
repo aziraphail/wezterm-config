@@ -82,9 +82,9 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 
 | Keys | Action |
 | ---- | ------ |
-| Alt+Left | Home (beginning of line) |
-| Alt+Right | End (end of line) |
-| Alt+Backspace | Delete line backwards |
+| Alt+Left | Move cursor one word left |
+| Alt+Right | Move cursor one word right |
+| Alt+Backspace | Delete one word backwards |
 
 ## Leader Key Sequences
 
