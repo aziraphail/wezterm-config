@@ -23,7 +23,7 @@ local function default_font_size()
    if platform.is_mac then
       return 12
    elseif platform.is_win then
-      return 10.5
+      return 13
    end
    return 10
 end
@@ -35,4 +35,6 @@ return {
    --ref: https://wezfurlong.org/wezterm/config/lua/config/freetype_pcf_long_family_names.html#why-doesnt-wezterm-use-the-distro-freetype-or-match-its-configuration
    freetype_load_target = 'Normal', ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
    freetype_render_target = 'Normal', ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
+
+   line_height = 1.1,
 }
