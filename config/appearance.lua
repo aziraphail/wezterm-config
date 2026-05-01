@@ -46,8 +46,8 @@ return {
    switch_to_last_active_tab_when_closing_tab = true,
 
    -- command palette
-   command_palette_fg_color = '#b4befe',
-   command_palette_bg_color = '#11111b',
+   command_palette_fg_color = '#b7bdf8',
+   command_palette_bg_color = '#181926',
    command_palette_font_size = 12,
    command_palette_rows = 25,
 
@@ -61,7 +61,7 @@ return {
    adjust_window_size_when_changing_font_size = false,
    window_close_confirmation = 'NeverPrompt',
    window_frame = {
-      active_titlebar_bg = '#090909',
+      active_titlebar_bg = '#181926',
       -- font = fonts.font,
       -- font_size = fonts.font_size,
    },

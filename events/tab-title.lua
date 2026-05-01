@@ -68,17 +68,17 @@ local RENDER_VARIANTS = {
 ---@type table<string, Cells.SegmentColors>
 -- stylua: ignore
 local colors = {
-   text_default          = { bg = '#45475A', fg = '#1C1B19' },
-   text_hover            = { bg = '#5D87A3', fg = '#1C1B19' },
-   text_active           = { bg = '#74c7ec', fg = '#11111B' },
+   text_default          = { bg = '#494d64', fg = '#181926' },
+   text_hover            = { bg = '#8087a2', fg = '#181926' },
+   text_active           = { bg = '#91d7e3', fg = '#181926' },
 
-   unseen_output_default = { bg = '#45475A', fg = '#FFA066' },
-   unseen_output_hover   = { bg = '#5D87A3', fg = '#FFA066' },
-   unseen_output_active  = { bg = '#74c7ec', fg = '#FFA066' },
+   unseen_output_default = { bg = '#494d64', fg = '#f5a97f' },
+   unseen_output_hover   = { bg = '#8087a2', fg = '#f5a97f' },
+   unseen_output_active  = { bg = '#91d7e3', fg = '#f5a97f' },
 
-   scircle_default       = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#45475A' },
-   scircle_hover         = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#5D87A3' },
-   scircle_active        = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#74C7EC' },
+   scircle_default       = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#494d64' },
+   scircle_hover         = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#8087a2' },
+   scircle_active        = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#91d7e3' },
 }
 
 ---
@@ -290,7 +290,7 @@ M.setup = function(opts)
       window:perform_action(
          wezterm.action.PromptInputLine({
             description = wezterm.format({
-               { Foreground = { Color = '#FFFFFF' } },
+               { Foreground = { Color = '#cad3f5' } },
                { Attribute = { Intensity = 'Bold' } },
                { Text = 'Enter new name for tab' },
             }),
