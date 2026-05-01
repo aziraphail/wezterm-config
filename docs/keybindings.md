@@ -34,8 +34,6 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 | ---- | ------ |
 | Ctrl+Shift+C | Copy to clipboard |
 | Ctrl+Shift+V | Paste from clipboard |
-| Select text | Auto-copy (default mouse binding) |
-| Ctrl+Click | Open link under cursor |
 
 ## Tabs
 
@@ -47,7 +45,6 @@ Keybinding design follows Ghostty's conventions: **Ctrl+Shift** for primary acti
 | Ctrl+PageUp / PageDown | Move tab left / right |
 | Alt+1-8 | Switch to tab 1-8 |
 | Alt+9 | Switch to last tab |
-| Ctrl+Shift+W | Close tab (when only one pane; see Panes) |
 | Ctrl+Alt+0 | Rename tab (prompt) |
 | Ctrl+Alt+9 | Toggle tab bar visibility |
 | Ctrl+Shift+L | Fuzzy launch selector (profiles with icons) |
@@ -98,8 +95,9 @@ Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then pres
 | n | Next background image |
 | p | Previous background image |
 | s | Fuzzy-select background image |
+| Escape / q | Exit mode |
 
-### Focus Mode (direct shortcut)
+## Background Focus Mode
 
 | Keys | Action |
 | ---- | ------ |
@@ -126,7 +124,7 @@ Activate the leader by pressing **Ctrl+Alt+Space** (3 second timeout), then pres
 | ------ | ------ |
 | Select text | Auto-copies to clipboard |
 | Ctrl+Click | Open link under cursor |
-| Right-click + button | Fuzzy launch selector with profile icons |
+| Right-click on new-tab (+) button | Fuzzy launch selector with profile icons |
 
 ## Notes
 
