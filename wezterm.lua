@@ -1,4 +1,3 @@
-local wezterm = require('wezterm')
 local Config = require('config')
 local env = require('utils.env')
 local backdrops = require('utils.backdrops')
