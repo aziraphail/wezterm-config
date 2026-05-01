@@ -8,7 +8,7 @@ Modular WezTerm configuration for Windows/macOS/Linux. Lua 5.4, Catppuccin Macch
 wezterm.lua              # Entry point: composes config, registers events, seeds backdrops
 config/
   init.lua               # Config builder (chainable :append() pattern)
-  appearance.lua         # Colors, WebGPU, scrollbar, animations
+  appearance.lua         # Colors, WebGPU, scrollbar, cursor
   bindings.lua           # Keybindings (Ghostty-style Ctrl+Shift layout)
   domains.lua            # WSL/SSH/Unix domains
   fonts.lua              # Font stack with per-OS sizing
